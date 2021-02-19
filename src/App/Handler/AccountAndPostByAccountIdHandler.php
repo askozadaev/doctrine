@@ -36,8 +36,9 @@ class AccountAndPostByAccountIdHandler implements RequestHandlerInterface
     {
 //        $accountId = $request->getAttribute('accountId', false);
         $accountId =$request->getQueryParams()['accountId'];
-//        var_dump($accountId); die();
+
         $accountAndPostResult = $this->accountAndPostRepository->getAccountsAndPostsByAccountId($accountId);
+//        var_dump($accountAndPostResult->jsonSerialize()); die();
         return new JsonResponse($accountAndPostResult);
     }
 }

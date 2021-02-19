@@ -23,6 +23,8 @@ class Account implements \JsonSerializable
      */
     private $fullName;
 
+    private $postId;
+
     /**
      * Application constructor.
      * @param $fullName

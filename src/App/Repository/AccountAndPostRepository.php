@@ -5,8 +5,10 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Account;
 use App\Entity\AccountAndPost;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Zend\Filter\StringToLower;
 
 class AccountAndPostRepository
@@ -22,6 +24,12 @@ class AccountAndPostRepository
      * AccountAndPostRepository constructor.
      * @param EntityManagerInterface $entityManager
      */
+
+    /**
+     * @var QueryBuilder
+     */
+    protected $queryBuilder;
+
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -51,7 +59,25 @@ SQL;
         return $stmt->fetchAll();
     }
 
-    public function getAccountsAndPostsByAccountId(int $accountId): ?array
+    public function getAccountsAndPostsByAccountId(int $accountId): ?Account
+    {
+        try {
+            $queryBuilder = $this
+                ->entityManager
+                ->createQueryBuilder()
+                ->select('a')
+                ->from(Account::class, 'a')
+                ->where('a.id = :id')
+                ->setParameter('id', $accountId);
+
+            return $queryBuilder
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (\Exception $exception) {
+            return null;
+        }
+    }
+/*    public function getAccountsAndPostsByAccountId(int $accountId): ?array
     {
         $sql = <<<SQL
 SELECT	acc.id as account_id,
@@ -75,7 +101,7 @@ SQL;
         }
 
         return $stmt->fetchAll();
-    }
+    }*/
     public function setAccounts(array $data): ?bool
     {
 
