@@ -80,8 +80,6 @@ SQL;
     {
 
         $accountId = (new StringToLower('UTF-8'))->filter($data['accountId']);
-        var_dump($accountId);
-        die();
         $fullname = (new StringToLower('UTF-8'))->filter($data['fullname']);
         $postid = (new StringToLower('UTF-8'))->filter($data['postid']);
         $sql = <<<SQL
@@ -95,7 +93,7 @@ SQL;
                 ->entityManager
                 ->getConnection()
                 ->prepare($sql);
-            $stmt->bindParam(':account_id', $accountId);
+            $stmt->bindParam(':id', $accountId);
             $stmt->bindParam(':fullname', $fullname);
             $stmt->bindParam(':postid', $postid);
             $stmt->execute();
@@ -103,6 +101,6 @@ SQL;
         } catch (Exception $ex) {
             throw new RuntimeException($ex->getMessage());
         }
-        return $stmt->$result;
+        return $result;
     }
 }
