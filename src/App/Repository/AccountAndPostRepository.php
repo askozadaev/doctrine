@@ -7,6 +7,7 @@ namespace App\Repository;
 
 use App\Entity\Account;
 use App\Entity\AccountAndPost;
+use App\Entity\Post;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Zend\Filter\StringToLower;
@@ -67,13 +68,20 @@ SQL;
                 ->createQueryBuilder()
                 ->select('a')
                 ->from(Account::class, 'a')
-                ->where('a.id = :id')
+                ->leftJoin(
+                    Post::class,
+                    'p',
+                    'WITH',
+                    'a.postId = p.id'
+                )
+                ->where('a.id=:id')
                 ->setParameter('id', $accountId);
-
+//            var_dump($queryBuilder->getQuery()->getDQL()); die();
             return $queryBuilder
                 ->getQuery()
                 ->getOneOrNullResult();
         } catch (\Exception $exception) {
+            var_dump($exception->getTraceAsString()); die();
             return null;
         }
     }

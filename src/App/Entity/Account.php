@@ -10,8 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Account implements \JsonSerializable
 {
+
     /**
      * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(name="id", type="integer")
      * @var int
      */
@@ -23,6 +25,12 @@ class Account implements \JsonSerializable
      */
     private $fullName;
 
+/**
+
+* @ORM\OneToOne(targetEntity="App\Entity\Post")
+* @ORM\JoinColumn(name="postId", referencedColumnName="id")
+
+ */
     private $postId;
 
     /**
