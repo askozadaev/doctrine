@@ -3,6 +3,7 @@
 
 namespace App\Handler;
 
+use App\Entity\AccountAndPost;
 use App\Exception\RuntimeException;
 use App\Repository\AccountAndPostRepository;
 use Doctrine\ORM\EntityManager;
@@ -36,16 +37,20 @@ class AccountAddAccountHandler implements RequestHandlerInterface
     }
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        try {
-            $incomingData = $this->getRequestContentsAsJson($request);
-//            $incomingData =  $request->getBody()->getContents();
-        } catch (\Exception $e) {
-//            return $this->createErrorResponse($e->getMessages(), 406);
-        }
-//        $incomingData = json_decode($incomingData, true);
-        var_dump($incomingData);
-        die();
-        $accountAndPostResult = $this->accountAndPostRepository->setAccounts($incomingData);
+        $fullName = json_decode($request->getBody()->getContents())->{'fullName'};
+        $postId = json_decode($request->getBody()->getContents())->{'postId'};
+
+        $ap = $this->getAccountAndPost($postId);
+        $accountAndPostResult = $this->accountAndPostRepository->setAccounts($ap);
         return new JsonResponse($accountAndPostResult);
+    }
+
+    private function getAccountAndPost(string $id) : ?AccountAndPost
+    {
+        if ($ap = $this->accountAndPostRepository->find($id)) {
+            $ap->setDeletedAt();
+            return $ap;
+        }
+        return null;
     }
 }

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Post;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Account;
+use Doctrine\ORM\Query\Expr\Join;
 
 class AccountRepository
 {
@@ -23,6 +25,36 @@ class AccountRepository
 
     public function getAccountsAll(): ?array
     {
+        try {
+//            var_dump("text");
+//            die();
+            $acc = $this
+                ->entityManager
+                ->createQueryBuilder()
+                ->select('a')
+                ->from(Account::class, 'a')
+                ->leftJoin(
+                    Post::class,
+                    'p',
+                    Join::WITH,
+                    'a.post = p'
+                )
+                ->getQuery()
+                ->getArrayResult();
+
+            var_dump($acc); die();
+
+            return $acc;
+        } catch (\Exception $ex) {
+            var_dump($ex->getMessage());
+            die();
+            return [];
+        }
+    }
+
+    /*
+    public function getAccountsAll(): ?array
+    {
         $sql = <<<SQL
     SELECT id, fullname, postid
     FROM public.account;
@@ -38,5 +70,5 @@ SQL;
         }
 
         return $stmt->fetchAll();
-    }
+    }*/
 }

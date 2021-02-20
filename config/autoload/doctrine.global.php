@@ -28,7 +28,7 @@ return [
         ],
         'configuration' => [
             'orm_default' => [
-                'auto_generate_proxy_classes' => false,
+                'auto_generate_proxy_classes' => true,
             ],
         ],
     ],

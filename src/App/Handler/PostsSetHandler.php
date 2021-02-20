@@ -34,8 +34,6 @@ class PostsSetHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $param = json_decode($request->getBody()->getContents())->{'postName'};
-        /*var_dump($param);
-        die();*/
         $postResult = $this->postRepository->setPost($param);
         return new JsonResponse($postResult);
     }

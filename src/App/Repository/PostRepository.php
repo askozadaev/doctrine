@@ -50,8 +50,6 @@ SQL;
             $this->entityManager->flush();
             return true;
         } catch (\Exception $ex) {
-            var_dump($ex->getMessage());
-            die();
             return false;
         }
     }

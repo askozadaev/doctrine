@@ -14,12 +14,24 @@ use Zend\Filter\StringToLower;
 
 class AccountAndPostRepository
 {
-    public const ENTITY_CLASS_NAME = AccountAndPost::class;
+    public const ENTITY_CLASS_NAME = Account::class;
 
     /**
      * @var EntityManagerInterface
      */
     private $entityManager;
+
+    /**
+     * @return object
+     * @var EntityManagerInterface
+     */
+    public function find(string $identification): ?object
+    {
+        return $object = $this
+            ->entityManager
+            ->getRepository(static::ENTITY_CLASS_NAME)
+            ->findOneBy(['id' => $identification]);
+    }
 
     /**
      * AccountAndPostRepository constructor.
@@ -38,26 +50,17 @@ class AccountAndPostRepository
 
     public function getAccountsAndPostsAll(): ?array
     {
-        $sql = <<<SQL
-SELECT	acc.id as account_id,
-          acc.fullname as account_fullname,
-          acc.postid as account_post_id,
-          pst.name as post_name
-FROM public.account acc
-         INNER JOIN public.post pst
-                    ON acc.postid = pst.id;
-SQL;
         try {
-            $stmt = $this
+            return $acc = $this
                 ->entityManager
-                ->getConnection()
-                ->prepare($sql);
-            $stmt->execute();
-        } catch (Exception $ex) {
-            throw new RuntimeException($ex->getMessage());
+                ->createQueryBuilder()
+                ->select('a')
+                ->from(Account::class, 'a')
+                ->findAll();
+        } catch (\Exception $ex) {
+            var_dump($ex->getTraceAsString());
+            return [];
         }
-
-        return $stmt->fetchAll();
     }
 
     public function getAccountsAndPostsByAccountId(int $accountId): ?Account //TODO Вернуть joined сущьность
@@ -111,10 +114,29 @@ SQL;
 
         return $stmt->fetchAll();
     }*/
-    public function setAccounts(array $data): ?bool
+    public function setAccounts(Post $post)
     {
+        try {
+            $acc = new Account();
+//            $acc->setFullName($fullName);
+            $acc->setPost($post);
+            $this->entityManager->persist($acc);
+            $this->entityManager->flush();
+            return true;
+        } catch (\Exception $ex) {
+            var_dump($ex->getMessage());
+            return false;
+        }
 
-//        $accountId = (new StringToLower('UTF-8'))->filter($data['accountId']);
+
+
+
+
+
+
+
+
+/*//        $accountId = (new StringToLower('UTF-8'))->filter($data['accountId']);
         $fullname = (new StringToLower('UTF-8'))->filter($data['fullname']);
         $postid = (new StringToLower('UTF-8'))->filter($data['postid']);
         $sql = <<<SQL
@@ -136,6 +158,20 @@ SQL;
         } catch (Exception $ex) {
             throw new RuntimeException($ex->getMessage());
         }
-        return $result;
+        return $result;*/
     }
+
+    /*public function setAccounts(string $fullName): ?bool //TODO Спросить у Димы, как реализовать
+    {
+        try {
+            $acc = new Account();
+            $acc->setFullName($fullName);
+            $acc->setPostId(Account::POST_ROLE); // Пусть будет по умолчанию :о)
+            $this->entityManager->persist($acc);
+            $this->entityManager->flush();
+            return true;
+        } catch (\Exception $ex) {
+            return false;
+        }
+    }*/
 }

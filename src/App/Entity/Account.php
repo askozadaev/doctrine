@@ -28,20 +28,36 @@ class Account implements \JsonSerializable
     private $fullName;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Post", mappedBy="post")
-     * @ORM\JoinColumn(name="postId", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="App\Entity\Post")
+     * @ORM\JoinColumn(name="postid", referencedColumnName="id")
+     * @var Post
      */
-    private $postId;
+    private $post;
+
 
     /**
      * Application constructor.
      * @param $fullName
      * @param $postId
      */
-    public function __construct($fullName, $postId)
+    public function __construct()
     {
-        $this->$fullName = $fullName;
-        $this->$postId = $postId;
+        $a = func_get_args();
+        $i = func_num_args();
+        switch ($i) {
+            case 0:
+                break;
+            case 1:
+                $fullName ="";
+                $this->$fullName = $a[1];
+                break;
+            case 2:
+                $fullName = "";
+                $postId = -1;
+                $this->$fullName = $a[1];
+                $this->$postId = $a[2];
+                break;
+        }
     }
 
     /**
@@ -77,19 +93,19 @@ class Account implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return Post
      */
-    public function getPostId()
+    public function getPost(): Post
     {
-        return $this->postId;
+        return $this->post;
     }
 
     /**
-     * @param mixed $postId
+     * @param mixed $post
      */
-    public function setPostId($postId): void
+    public function setPost(Post $post): void
     {
-        $this->postId = $postId;
+        $this->post = $post;
     }
 
     public function jsonSerialize(): array
@@ -97,7 +113,7 @@ class Account implements \JsonSerializable
         return [
             'id' => $this->id,
             'fullName' => $this->fullName,
-            'postId' => $this->postId
+            'postId' => $this->post->getId()
         ];
     }
 }
