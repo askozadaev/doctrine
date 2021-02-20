@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Post;
+use Zend\Filter\StringToLower;
 
 class PostRepository
 {
@@ -39,5 +40,19 @@ SQL;
         }
 
         return $stmt->fetchAll();
+    }
+    public function setPost(string $postName): ?bool
+    {
+        try {
+            $post = new Post();
+            $post->setName($postName);
+            $this->entityManager->persist($post);
+            $this->entityManager->flush();
+            return true;
+        } catch (\Exception $ex) {
+            var_dump($ex->getMessage());
+            die();
+            return false;
+        }
     }
 }

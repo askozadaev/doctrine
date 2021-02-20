@@ -1,18 +1,18 @@
 drop table account, post;
-CREATE SEQUENCE acc_id_seq;
+CREATE SEQUENCE account_id_seq;
 CREATE TABLE account (
-                         id        integer NOT NULL PRIMARY KEY DEFAULT nextval('acc_id_seq'),
+                         id        integer NOT NULL PRIMARY KEY DEFAULT nextval('account_id_seq'),
                          fullName       varchar(40) NOT NULL,
                          postId         integer NOT NULL
 );
-ALTER SEQUENCE acc_id_seq OWNED BY account.id;
+ALTER SEQUENCE account_id_seq OWNED BY account.id;
 
-CREATE SEQUENCE pst_id_seq;
+CREATE SEQUENCE post_id_seq;
 CREATE TABLE post (
-                      id        integer NOT NULL PRIMARY KEY DEFAULT nextval('pst_id_seq'),
-                      name       varchar(40) NOT NULL
+                      id        integer NOT NULL PRIMARY KEY DEFAULT nextval('post_id_seq'),
+                      name       varchar(40) NOT NULL UNIQUE
 );
-ALTER SEQUENCE pst_id_seq OWNED BY post.id;
+ALTER SEQUENCE post_id_seq OWNED BY post.id;
 --*-
 INSERT INTO "post" (name) VALUES
 ('admin'),

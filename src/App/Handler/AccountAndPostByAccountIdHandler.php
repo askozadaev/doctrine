@@ -34,9 +34,7 @@ class AccountAndPostByAccountIdHandler implements RequestHandlerInterface
     }
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-//        $accountId = $request->getAttribute('accountId', false);
         $accountId =$request->getQueryParams()['accountId'];
-
         $accountAndPostResult = $this->accountAndPostRepository->getAccountsAndPostsByAccountId($accountId);
 //        var_dump($accountAndPostResult->jsonSerialize()); die();
         return new JsonResponse($accountAndPostResult);

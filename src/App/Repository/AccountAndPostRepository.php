@@ -60,7 +60,7 @@ SQL;
         return $stmt->fetchAll();
     }
 
-    public function getAccountsAndPostsByAccountId(int $accountId): ?Account
+    public function getAccountsAndPostsByAccountId(int $accountId): ?Account //TODO Вернуть joined сущьность
     {
         try {
             $queryBuilder = $this
@@ -81,7 +81,8 @@ SQL;
                 ->getQuery()
                 ->getOneOrNullResult();
         } catch (\Exception $exception) {
-            var_dump($exception->getTraceAsString()); die();
+            var_dump($exception->getTraceAsString());
+            die();
             return null;
         }
     }

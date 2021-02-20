@@ -47,6 +47,7 @@ class ConfigProvider
                 Handler\HomePageHandler::class => Handler\HomePageHandlerFactory::class,
                 Handler\AccountsHandler::class => Handler\AccountsHandlerFactory::class,
                 Handler\PostsHandler::class => Handler\PostsHandlerFactory::class,
+                Handler\PostsSetHandler::class => Handler\PostsSetHandlerFactory::class,
                 Handler\AccountAndPostAllHandler::class => Handler\AccountsAndPostsAllHandlerFactory::class,
                 Handler\AccountAndPostByAccountIdHandler::class => Handler\AccountsAndPostsByAccountIdHandlerFactory::class,
                 Handler\AccountAddAccountHandler::class => Handler\AccountAddAccountHandlerFactory::class,

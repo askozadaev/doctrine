@@ -10,7 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Account implements \JsonSerializable
 {
-
+    // Константы статуса поста (роли).
+    const POSTID_ADMIN       = 1; // Администратор
+    const POST_ROLE   = 2; // Обычный пользователь
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -25,12 +27,10 @@ class Account implements \JsonSerializable
      */
     private $fullName;
 
-/**
-
-* @ORM\OneToOne(targetEntity="App\Entity\Post")
-* @ORM\JoinColumn(name="postId", referencedColumnName="id")
-
- */
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Post", mappedBy="post")
+     * @ORM\JoinColumn(name="postId", referencedColumnName="id")
+     */
     private $postId;
 
     /**

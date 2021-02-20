@@ -37,12 +37,14 @@ class AccountAddAccountHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         try {
-//            $incomingData = $this->getRequestContentsAsJson($request);
-            $incomingData =  $request->getBody()->getContents();
+            $incomingData = $this->getRequestContentsAsJson($request);
+//            $incomingData =  $request->getBody()->getContents();
         } catch (\Exception $e) {
 //            return $this->createErrorResponse($e->getMessages(), 406);
         }
-        $incomingData = json_decode($incomingData, true);
+//        $incomingData = json_decode($incomingData, true);
+        var_dump($incomingData);
+        die();
         $accountAndPostResult = $this->accountAndPostRepository->setAccounts($incomingData);
         return new JsonResponse($accountAndPostResult);
     }

@@ -10,10 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Post implements \JsonSerializable
 {
-    // Константы статуса поста.
-    const NAME_ADMIN       = 1; // Администратор
-    const NAME_USER   = 2; // Обычный пользователь
-
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer")
@@ -32,10 +28,24 @@ class Post implements \JsonSerializable
      * Application constructor.
      * @param $name
      */
-    public function __construct($name)
+    public function __construct()
+    {
+        $a = func_get_args();
+        $i = func_num_args();
+        switch ($i) {
+            case 0:
+                break;
+            case 1:
+                $name ="";
+                $this->$name = $a[1];
+                break;
+        }
+    }
+
+    /*public function __construct($name)
     {
         $this->$name = $name;
-    }
+    }*/
 
     /**
      * @return int
