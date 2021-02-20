@@ -113,13 +113,13 @@ SQL;
     public function setAccounts(array $data): ?bool
     {
 
-        $accountId = (new StringToLower('UTF-8'))->filter($data['accountId']);
+//        $accountId = (new StringToLower('UTF-8'))->filter($data['accountId']);
         $fullname = (new StringToLower('UTF-8'))->filter($data['fullname']);
         $postid = (new StringToLower('UTF-8'))->filter($data['postid']);
         $sql = <<<SQL
 INSERT INTO public.account(
-	id, fullname, postid)
-	VALUES (:id, :fullname, :postid);
+	fullname, postid)
+	VALUES (:fullname, :postid);
 SQL;
         $result = false;
         try {
@@ -127,7 +127,7 @@ SQL;
                 ->entityManager
                 ->getConnection()
                 ->prepare($sql);
-            $stmt->bindParam(':id', $accountId);
+//            $stmt->bindParam(':id', $accountId);
             $stmt->bindParam(':fullname', $fullname);
             $stmt->bindParam(':postid', $postid);
             $stmt->execute();

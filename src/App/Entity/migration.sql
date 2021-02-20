@@ -14,15 +14,15 @@ CREATE TABLE post (
 );
 ALTER SEQUENCE pst_id_seq OWNED BY post.id;
 --*-
-INSERT INTO "post" (id, name) VALUES
-(1, 'admin'),
-(2, 'user');
+INSERT INTO "post" (name) VALUES
+('admin'),
+('user');
 
 --*-
-INSERT INTO "account" (id, fullName, postId) VALUES
-(1, 'Test User 1', 1),
-(2, 'Test User 2', 2),
-(3, 'Test User 3', 2);
+INSERT INTO "account" (fullName, postId) VALUES
+('Test User 1', 1),
+('Test User 2', 2),
+('Test User 3', 2);
 
 --*-
 SELECT	acc.id as account_id,
