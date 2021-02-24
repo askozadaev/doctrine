@@ -34,14 +34,19 @@ use Zend\Expressive\MiddlewareFactory;
  */
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
     $app->get('/', App\Handler\HomePageHandler::class, 'home');
-    $app->get('/v1/accounts', App\Handler\AccountsHandler::class, 'accounts');
-    $app->get('/posts', App\Handler\PostsHandler::class, 'posts');
-    $app->get('/v1/getaccountsall', App\Handler\AccountAndPostAllHandler::class, 'accountandpostall');
+
+
+
     $app->get('/accountsposts/byid', App\Handler\AccountAndPostByAccountIdHandler::class, 'accountsadnpostsbyid');
-    $app->get('/v1/users/', App\Handler\AccountAndPostByAccountIdHandler::class, 'v1accountsadnpostsbyid');
-    $app->post('/v1/setpost', App\Handler\PostsSetHandler::class, 'v1setpost');
+
+
     $app->post('/accountsposts/addaccount', App\Handler\AccountAddAccountHandler::class, 'accountaddaccount');
     //TODO Спросить, как и где используется 'name'
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
+    $app->get('/v1/users/', App\Handler\AccountAndPostByAccountIdHandler::class, 'v1accountsadnpostsbyid');
+    $app->get('/v1/getaccountsall', App\Handler\AccountAndPostAllHandler::class, 'accountandpostall');
+    $app->get('/v1/accounts', App\Handler\AccountsHandler::class, 'accounts');
 
+    $app->get('/v1/postsall', App\Handler\PostsHandler::class, 'postsall');
+    $app->post('/v1/setpost', App\Handler\PostsSetHandler::class, 'v1setpost');
 };

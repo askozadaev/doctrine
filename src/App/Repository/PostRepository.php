@@ -24,22 +24,18 @@ class PostRepository
 
     public function getPostsAll(): ?array
     {
-        $sql = <<<SQL
-    SELECT id, name
-	FROM public.post;
-SQL;
         try {
-            $stmt = $this
+            return $pst = $this
                 ->entityManager
-                ->getConnection()
-                ->prepare($sql);
-//        $stmt->bindParam(':id', $purchaseId);
-            $stmt->execute();
+                ->createQueryBuilder()
+                ->select('a')
+                ->from(Post::class, 'a')
+                ->getQuery()
+                ->getArrayResult();
         } catch (Exception $ex) {
+//            var_dump($ex->getTraceAsString());
             throw new RuntimeException($ex->getMessage());
         }
-
-        return $stmt->fetchAll();
     }
     public function setPost(string $postName): ?bool
     {

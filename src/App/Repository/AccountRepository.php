@@ -42,7 +42,7 @@ class AccountRepository
                 ->getQuery()
                 ->getArrayResult();
 
-            var_dump($acc); die();
+//            var_dump($acc); die();
 
             return $acc;
         } catch (\Exception $ex) {
