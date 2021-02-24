@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\JsonResponse;
+use App\Middleware\Middleware;
 
 class AccountAndPostByAccountIdHandler implements RequestHandlerInterface
 {
@@ -36,6 +37,9 @@ class AccountAndPostByAccountIdHandler implements RequestHandlerInterface
     {
         $accountId =$request->getQueryParams()['accountId'];
         $accountAndPostResult = $this->accountAndPostRepository->getAccountsAndPostsByAccountId($accountId);
+
+//        $accmw = $request->getAttribute(Middleware::ACCOUNT_AND_POST);
+
 /*        var_dump($accountAndPostResult->jsonSerialize());
         die();*/
         return new JsonResponse($accountAndPostResult);
