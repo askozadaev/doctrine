@@ -28,23 +28,19 @@ class AccountRepository
         try {
 //            var_dump("text");
 //            die();
-            $acc = $this
+            return $this
                 ->entityManager
                 ->createQueryBuilder()
                 ->select('a')
                 ->from(Account::class, 'a')
-                ->leftJoin(
+/*                ->leftJoin(
                     Post::class,
                     'p',
                     Join::WITH,
                     'a.post = p'
-                )
+                )*/
                 ->getQuery()
                 ->getArrayResult();
-
-//            var_dump($acc); die();
-
-            return $acc;
         } catch (\Exception $ex) {
             var_dump($ex->getMessage());
             die();

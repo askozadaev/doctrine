@@ -10,6 +10,7 @@ use App\Entity\AccountAndPost;
 use App\Entity\Post;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Zend\Filter\StringToLower;
 
 class AccountAndPostRepository
@@ -48,22 +49,7 @@ class AccountAndPostRepository
         $this->entityManager = $entityManager;
     }
 
-    public function getAccountsAndPostsAll(): ?array
-    {
-        try {
-            return $acc = $this
-                ->entityManager
-                ->createQueryBuilder()
-                ->select('a')
-                ->from(Account::class, 'a')
-                ->findAll();
-        } catch (\Exception $ex) {
-            var_dump($ex->getTraceAsString());
-            return [];
-        }
-    }
-
-    public function getAccountsAndPostsByAccountId(int $accountId): ?Account //TODO Вернуть joined сущьность
+    public function getAccountsAndPostsAll(): ?array //Paginator
     {
         try {
             $queryBuilder = $this
@@ -75,18 +61,45 @@ class AccountAndPostRepository
                     Post::class,
                     'p',
                     'WITH',
-                    'a.postId = p.id'
-                )
-                ->where('a.id=:id')
-                ->setParameter('id', $accountId);
-//            var_dump($queryBuilder->getQuery()->getDQL()); die();
+                    'a.post = p'
+                );
+/*            var_dump($queryBuilder->getQuery()->getDQL());
+            die();*/
             return $queryBuilder
                 ->getQuery()
-                ->getOneOrNullResult();
-        } catch (\Exception $exception) {
-            var_dump($exception->getTraceAsString());
-            die();
-            return null;
+                ->getResult();
+        } catch (\Exception $ex) {
+            var_dump($ex->getTraceAsString());
+            return [];
+        }
+    }
+
+
+
+    public function getAccountsAndPostsByAccountId(int $accountId): ?array //TODO Вернуть joined сущьность
+    {
+        try {
+            $queryBuilder = $this
+                ->entityManager
+                ->createQueryBuilder()
+                ->select('a')
+                ->where('a.id = :accountId')
+                ->setParameter('accountId', $accountId)
+                ->from(Account::class, 'a')
+                ->leftJoin(
+                    Post::class,
+                    'p',
+                    'WITH',
+                    'a.post = p'
+                );
+            /*            var_dump($queryBuilder->getQuery()->getDQL());
+                        die();*/
+            return $queryBuilder
+                ->getQuery()
+                ->getResult();
+        } catch (\Exception $ex) {
+            var_dump($ex->getTraceAsString());
+            return [];
         }
     }
 /*    public function getAccountsAndPostsByAccountId(int $accountId): ?array

@@ -35,6 +35,7 @@ class AccountAndPostAllHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         $accountAndPostResult = $this->accountAndPostRepository->getAccountsAndPostsAll();
+//        var_dump(count($accountAndPostResult)); die;
         return new JsonResponse($accountAndPostResult);
     }
 }
