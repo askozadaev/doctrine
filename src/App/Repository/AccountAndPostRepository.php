@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\AccountJoinedPost;
 use App\Entity\Account;
 use App\Entity\AccountAndPost;
 use App\Entity\Post;
@@ -15,7 +16,7 @@ use Zend\Filter\StringToLower;
 
 class AccountAndPostRepository
 {
-    public const ENTITY_CLASS_NAME = Account::class;
+    public const ENTITY_CLASS_NAME = AccountJoinedPost::class;
 
     /**
      * @var EntityManagerInterface
@@ -56,7 +57,7 @@ class AccountAndPostRepository
                 ->entityManager
                 ->createQueryBuilder()
                 ->select('a')
-                ->from(Account::class, 'a')
+                ->from(AccountJoinedPost::class, 'a')
                 ->leftJoin(
                     Post::class,
                     'p',
@@ -85,7 +86,7 @@ class AccountAndPostRepository
                 ->select('a')
                 ->where('a.id = :accountId')
                 ->setParameter('accountId', $accountId)
-                ->from(Account::class, 'a')
+                ->from(AccountJoinedPost::class, 'a')
                 ->leftJoin(
                     Post::class,
                     'p',
@@ -127,12 +128,12 @@ SQL;
 
         return $stmt->fetchAll();
     }*/
-    public function setAccounts(Post $post)
+    public function setAccounts($fullName, $postId)
     {
         try {
             $acc = new Account();
-//            $acc->setFullName($fullName);
-            $acc->setPost($post);
+            $acc->setFullName($fullName);
+            $acc->setPostId($postId);
             $this->entityManager->persist($acc);
             $this->entityManager->flush();
             return true;
@@ -177,9 +178,9 @@ SQL;
     /*public function setAccounts(string $fullName): ?bool //TODO Спросить у Димы, как реализовать
     {
         try {
-            $acc = new Account();
+            $acc = new AccountJoinedPost();
             $acc->setFullName($fullName);
-            $acc->setPostId(Account::POST_ROLE); // Пусть будет по умолчанию :о)
+            $acc->setPostId(AccountJoinedPost::POST_ROLE); // Пусть будет по умолчанию :о)
             $this->entityManager->persist($acc);
             $this->entityManager->flush();
             return true;

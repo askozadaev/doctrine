@@ -6,12 +6,12 @@ namespace App\Repository;
 
 use App\Entity\Post;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Entity\Account;
+use App\Entity\AccountJoinedPost;
 use Doctrine\ORM\Query\Expr\Join;
 
 class AccountRepository
 {
-    public const ENTITY_CLASS_NAME = Account::class;
+    public const ENTITY_CLASS_NAME = AccountJoinedPost::class;
 
     /**
      * @var EntityManagerInterface
@@ -32,7 +32,7 @@ class AccountRepository
                 ->entityManager
                 ->createQueryBuilder()
                 ->select('a')
-                ->from(Account::class, 'a')
+                ->from(AccountJoinedPost::class, 'a')
 /*                ->leftJoin(
                     Post::class,
                     'p',

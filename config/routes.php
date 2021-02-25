@@ -41,7 +41,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
 
 
     $app->post('/accountsposts/addaccount', App\Handler\AccountAddAccountHandler::class, 'accountaddaccount');
-    //TODO Спросить, как и где используется 'name'
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
 
     $app->get('/v1/users/', App\Handler\AccountAndPostAllHandler::class, 'v1accountsadnpostsbyid');

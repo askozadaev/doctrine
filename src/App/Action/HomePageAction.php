@@ -6,7 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
 use Doctrine\ORM\EntityManager;
-use App\Entity\Account;
+use App\Entity\AccountJoinedPost;
 
 class HomePageAction
 {
@@ -19,6 +19,6 @@ class HomePageAction
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null): JsonResponse
     {
-        return new JsonResponse($this->entityManager->find(Account::class, 1));
+        return new JsonResponse($this->entityManager->find(AccountJoinedPost::class, 1));
     }
 }

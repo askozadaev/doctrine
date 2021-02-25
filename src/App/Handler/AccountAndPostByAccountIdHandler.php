@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\JsonResponse;
-use App\Middleware\Middleware;
+use App\Validator\EmptyParametrValidator;
 
 class AccountAndPostByAccountIdHandler implements RequestHandlerInterface
 {
@@ -35,13 +35,21 @@ class AccountAndPostByAccountIdHandler implements RequestHandlerInterface
     }
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        $accountId =$request->getQueryParams()['accountId'];
-        $accountAndPostResult = $this->accountAndPostRepository->getAccountsAndPostsByAccountId($accountId);
+        $PARAM_1_NAME = 'accountId';
+        $emptyParametrValidator = new EmptyParametrValidator();
+        $emptyParametrValidator->validate($request, [$PARAM_1_NAME]);
+        if ($emptyParametrValidator->isValid()) {
+            $accountId =$request->getQueryParams()[$PARAM_1_NAME];
+            $accountAndPostResult = $this->accountAndPostRepository->getAccountsAndPostsByAccountId($accountId);
+            return new JsonResponse($accountAndPostResult);
+        } else {
+                return (new JsonResponse("A error! The quantity of parameters does not match"))->withStatus(400);
+        }
+
 
 //        $accmw = $request->getAttribute(Middleware::ACCOUNT_AND_POST);
 
 /*        var_dump($accountAndPostResult->jsonSerialize());
         die();*/
-        return new JsonResponse($accountAndPostResult);
     }
 }

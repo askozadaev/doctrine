@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="account")
  */
-class Account implements \JsonSerializable
+class AccountJoinedPost implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -23,11 +23,13 @@ class Account implements \JsonSerializable
      * @var string
      */
     private $fullName;
+
     /**
-     * @ORM\Column(name="postId", type="integer")
-     * @var int
+     * @ORM\OneToOne(targetEntity="App\Entity\Post")
+     * @ORM\JoinColumn(name="postId", referencedColumnName="id")
+     * @var Post
      */
-    private $postId;
+    private $post;
 
     /**
      * Application constructor.
@@ -86,23 +88,6 @@ class Account implements \JsonSerializable
     {
         $this->fullName = $fullName;
     }
-
-    /**
-     * @return int
-     */
-    public function getPostId(): int
-    {
-        return $this->postId;
-    }
-
-    /**
-     * @param int $postId
-     */
-    public function setPostId(int $postId): void
-    {
-        $this->postId = $postId;
-    }
-
 
     /**
      * @return Post
