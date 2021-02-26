@@ -4,47 +4,30 @@
 namespace App\Handler;
 
 use App\Repository\PostRepository;
-use App\Validator\ParametrValidator;
-use Doctrine\ORM\EntityManager;
+use App\Validator\ParametersValidator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Throwable;
 use Zend\Diactoros\Response\JsonResponse;
-use Zend\Expressive\Template\TemplateRendererInterface;
 
 class PostsHandler implements RequestHandlerInterface
 {
-    /** @var string */
-    private $containerName;
-
-    /** @var Router\RouterInterface */
-    private $router;
-
-    /** @var null|TemplateRendererInterface */
-    private $template;
-
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
-
     /**
      * @var PostRepository
      */
-    private $postRepository;
+    private PostRepository $postRepository;
 
     public function __construct(
-        EntityManager $entityManager,
         PostRepository $postRepository
     ) {
-        $this->entityManager = $entityManager;
         $this->postRepository = $postRepository;
     }
 
-    public function handle(ServerRequestInterface $request) : ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            $paramValidator = new ParametrValidator();
+            $paramValidator = new ParametersValidator();
             $paramValidator->validate($request, []);
             if ($paramValidator->isValid()) {
                 $postResult = $this->postRepository->getPostsAll();
@@ -52,7 +35,7 @@ class PostsHandler implements RequestHandlerInterface
             } else {
                 return (new JsonResponse("A error! The quantity of parameters does not match"))->withStatus(400);
             }
-        } catch (\Throwable $ex) {
+        } catch (Throwable $ex) {
             return (new JsonResponse("A error! Bad Request"))->withStatus(400);
         }
     }

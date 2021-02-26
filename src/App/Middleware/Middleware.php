@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Throwable;
 use Zend\Expressive\Router\RouteResult;
 
 class Middleware implements MiddlewareInterface
@@ -20,15 +21,14 @@ class Middleware implements MiddlewareInterface
         $route = $m->getMatchedRoute();
         try {
             $name = $route->getName();
-        } catch (\Throwable $ex) {
+        } catch (Throwable $ex) {
             $result = "Error request\n***";
             $log = "\n" . date('Y-m-d H:i:s') . ":\n" . print_r($result, true);
             return $handler->handle($request);
             die();
         }
         $qt = "Method: " . "RequestTarget: " . $request->getRequestTarget();
-//        $request = $request->withAttribute(self::ACCOUNT_AND_POST, self::ACCOUNT_AND_POST);
-        $result = "QueryParams: " . implode($qp) . "\n" . $qt . " name: " . $name ."\n***";
+        $result = "QueryParams: " . implode($qp) . "\n" . $qt . " name: " . $name . "\n***";
         $log = "\n" . date('Y-m-d H:i:s') . ":\n" . print_r($result, true);
         file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
         return $handler->handle($request);

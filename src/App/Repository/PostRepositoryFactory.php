@@ -9,7 +9,7 @@ use Psr\Container\ContainerInterface;
 
 class PostRepositoryFactory
 {
-    public function __invoke(ContainerInterface $container) : PostRepository
+    public function __invoke(ContainerInterface $container): PostRepository
     {
         return new PostRepository(
             $container->get(EntityManagerInterface::class)

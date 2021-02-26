@@ -12,8 +12,7 @@ class PostsHandlerFactory
 {
     public function __invoke(ContainerInterface $container) : PostsHandler
     {
-        $em = $container->get(EntityManagerInterface::class);
         $postsRepository = $container->get(PostRepository::class);
-        return new PostsHandler($em, $postsRepository);
+        return new PostsHandler($postsRepository);
     }
 }

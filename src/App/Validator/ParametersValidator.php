@@ -5,7 +5,7 @@ namespace App\Validator;
 
 use Psr\Http\Message\ServerRequestInterface;
 
-class ParametrValidator
+class ParametersValidator
 {
     private bool $valid = false;
 

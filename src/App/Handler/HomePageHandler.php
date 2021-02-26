@@ -18,25 +18,26 @@ use Zend\Expressive\ZendView\ZendViewRenderer;
 class HomePageHandler implements RequestHandlerInterface
 {
     /** @var string */
-    private $containerName;
+    private string $containerName;
 
     /** @var Router\RouterInterface */
-    private $router;
+    private Router\RouterInterface $router;
 
     /** @var null|TemplateRendererInterface */
-    private $template;
+    private ?TemplateRendererInterface $template;
 
     public function __construct(
         string $containerName,
         Router\RouterInterface $router,
         ?TemplateRendererInterface $template = null
     ) {
+
         $this->containerName = $containerName;
-        $this->router        = $router;
-        $this->template      = $template;
+        $this->router = $router;
+        $this->template = $template;
     }
 
-    public function handle(ServerRequestInterface $request) : ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if ($this->template === null) {
             return new JsonResponse([

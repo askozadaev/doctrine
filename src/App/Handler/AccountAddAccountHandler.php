@@ -6,9 +6,8 @@ namespace App\Handler;
 use App\Entity\AccountAndPost;
 use App\Exception\RuntimeException;
 use App\Repository\AccountAndPostRepository;
-use App\Validator\ParametrValidator;
+use App\Validator\ParametersValidator;
 use Doctrine\ORM\EntityManager;
-use PHPUnit\Util\Json;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -28,19 +27,18 @@ class AccountAddAccountHandler implements RequestHandlerInterface
 
     /**
      * AccountAndPostHandler constructor.
-     * @param EntityManager $entityManager
      * @param AccountAndPostRepository $accountAndPostRepository
      */
-    public function __construct(EntityManager $entityManager, AccountAndPostRepository $accountAndPostRepository)
+    public function __construct(AccountAndPostRepository $accountAndPostRepository)
     {
-        $this->entityManager = $entityManager;
         $this->accountAndPostRepository = $accountAndPostRepository;
     }
-    public function handle(ServerRequestInterface $request) : ResponseInterface
+
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $PARAM_1_NAME = 'fullName';
         $PARAM_2_NAME = 'postId';
-        $paramValidator = new ParametrValidator();
+        $paramValidator = new ParametersValidator();
         $paramValidator->validate($request, [$PARAM_1_NAME, $PARAM_2_NAME]);
         if ($paramValidator->isValid()) {
             $fullName = json_decode($request->getBody()->getContents())->{$PARAM_1_NAME};

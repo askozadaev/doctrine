@@ -5,23 +5,31 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\AccountJoinedPost;
 use App\Entity\Account;
 use App\Entity\AccountAndPost;
+use App\Entity\AccountJoinedPost;
 use App\Entity\Post;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Tools\Pagination\Paginator;
-use Zend\Filter\StringToLower;
+use Exception;
 
 class AccountAndPostRepository
 {
     public const ENTITY_CLASS_NAME = AccountJoinedPost::class;
-
     /**
      * @var EntityManagerInterface
      */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
+
+    /**
+     * AccountAndPostRepository constructor.
+     * @param EntityManagerInterface $entityManager
+     */
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
     /**
      * @return object
@@ -35,22 +43,7 @@ class AccountAndPostRepository
             ->findOneBy(['id' => $identification]);
     }
 
-    /**
-     * AccountAndPostRepository constructor.
-     * @param EntityManagerInterface $entityManager
-     */
-
-    /**
-     * @var QueryBuilder
-     */
-    protected $queryBuilder;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    public function getAccountsAndPostsAll(): ?array //Paginator
+    public function getAccountsAndPostsAll(): array
     {
         try {
             $queryBuilder = $this
@@ -67,7 +60,7 @@ class AccountAndPostRepository
             return $queryBuilder
                 ->getQuery()
                 ->getResult();
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             return [];
         }
     }
@@ -91,13 +84,13 @@ class AccountAndPostRepository
             return $queryBuilder
                 ->getQuery()
                 ->getResult();
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             var_dump($ex->getTraceAsString());
             return [];
         }
     }
 
-    public function setAccounts($fullName, $postId)
+    public function setAccounts($fullName, $postId): bool
     {
         try {
             $acc = new Account();
@@ -106,7 +99,7 @@ class AccountAndPostRepository
             $this->entityManager->persist($acc);
             $this->entityManager->flush();
             return true;
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             var_dump($ex->getMessage());
             return false;
         }
