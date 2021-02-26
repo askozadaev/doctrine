@@ -14,7 +14,6 @@ class AccountsAndPostsAllHandlerFactory
     {
         $em = $container->get(EntityManagerInterface::class);
         $accountsAndPostsRepository = $container->get(AccountAndPostRepository::class);
-
         return new AccountAndPostAllHandler($em, $accountsAndPostsRepository);
     }
 }

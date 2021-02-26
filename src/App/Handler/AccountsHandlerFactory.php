@@ -14,7 +14,6 @@ class AccountsHandlerFactory
     {
         $em = $container->get(EntityManagerInterface::class);
         $accountRepository = $container->get(AccountRepository::class);
-
         return new AccountsHandler($em, $accountRepository);
     }
 }

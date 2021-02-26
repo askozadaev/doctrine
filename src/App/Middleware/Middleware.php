@@ -18,7 +18,14 @@ class Middleware implements MiddlewareInterface
         /** @var RouteResult $m */
         $m = $request->getAttribute(RouteResult::class);
         $route = $m->getMatchedRoute();
-        $name = $route->getName();
+        try {
+            $name = $route->getName();
+        } catch (\Throwable $ex) {
+            $result = "Error request\n***";
+            $log = "\n" . date('Y-m-d H:i:s') . ":\n" . print_r($result, true);
+            return $handler->handle($request);
+            die();
+        }
         $qt = "Method: " . "RequestTarget: " . $request->getRequestTarget();
 //        $request = $request->withAttribute(self::ACCOUNT_AND_POST, self::ACCOUNT_AND_POST);
         $result = "QueryParams: " . implode($qp) . "\n" . $qt . " name: " . $name ."\n***";

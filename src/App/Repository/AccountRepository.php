@@ -26,19 +26,12 @@ class AccountRepository
     public function getAccountsAll(): ?array
     {
         try {
-//            var_dump("text");
-//            die();
             return $this
                 ->entityManager
                 ->createQueryBuilder()
                 ->select('a')
                 ->from(AccountJoinedPost::class, 'a')
-/*                ->leftJoin(
-                    Post::class,
-                    'p',
-                    Join::WITH,
-                    'a.post = p'
-                )*/
+
                 ->getQuery()
                 ->getArrayResult();
         } catch (\Exception $ex) {
@@ -47,24 +40,4 @@ class AccountRepository
             return [];
         }
     }
-
-    /*
-    public function getAccountsAll(): ?array
-    {
-        $sql = <<<SQL
-    SELECT id, fullname, postid
-    FROM public.account;
-SQL;
-        try {
-            $stmt = $this
-                ->entityManager
-                ->getConnection()
-                ->prepare($sql);
-            $stmt->execute();
-        } catch (Exception $ex) {
-            throw new RuntimeException($ex->getMessage());
-        }
-
-        return $stmt->fetchAll();
-    }*/
 }

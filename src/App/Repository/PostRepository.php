@@ -33,11 +33,10 @@ class PostRepository
                 ->getQuery()
                 ->getArrayResult();
         } catch (Exception $ex) {
-//            var_dump($ex->getTraceAsString());
             throw new RuntimeException($ex->getMessage());
         }
     }
-    public function setPost(string $postName): ?bool
+    public function setPost(string $postName): bool
     {
         try {
             $post = new Post();

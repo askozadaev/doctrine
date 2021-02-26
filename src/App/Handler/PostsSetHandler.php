@@ -4,7 +4,7 @@
 namespace App\Handler;
 
 use App\Repository\PostRepository;
-use App\Validator\EmptyParametrValidator;
+use App\Validator\ParametrValidator;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -35,14 +35,18 @@ class PostsSetHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $PARAM_1_NAME = 'postName';
-        $emptyParametrValidator = new EmptyParametrValidator();
-        $emptyParametrValidator->validate($request, [$PARAM_1_NAME]);
-        if ($emptyParametrValidator->isValid()) {
-            $param = json_decode($request->getBody()->getContents())->{$PARAM_1_NAME};
-            $postResult = $this->postRepository->setPost($param);
-            return new JsonResponse($postResult);
-        } else {
-            return (new JsonResponse("A error! The quantity of parameters does not match"))->withStatus(400);
+        try {
+            $paramValidator = new ParametrValidator();
+            $paramValidator->validate($request, [$PARAM_1_NAME]);
+            if ($paramValidator->isValid()) {
+                $param = json_decode($request->getBody()->getContents())->{$PARAM_1_NAME};
+                $postResult = $this->postRepository->setPost($param);
+                return new JsonResponse($postResult);
+            } else {
+                return (new JsonResponse("A error! The quantity of parameters does not match"))->withStatus(400);
+            }
+        } catch (\Throwable $ex) {
+            return (new JsonResponse("A error! Bad request"))->withStatus(400);
         }
     }
 }

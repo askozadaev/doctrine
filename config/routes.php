@@ -34,20 +34,11 @@ use Zend\Expressive\MiddlewareFactory;
  */
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
     $app->get('/', App\Handler\HomePageHandler::class, 'home');
-
-
-
-
-
-
-    $app->post('/accountsposts/addaccount', App\Handler\AccountAddAccountHandler::class, 'accountaddaccount');
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
-
     $app->get('/v1/users/', App\Handler\AccountAndPostAllHandler::class, 'v1accountsadnpostsbyid');
-
     $app->get('/v1/postsall', App\Handler\PostsHandler::class, 'postsall');
     $app->post('/v1/setpost', App\Handler\PostsSetHandler::class, 'v1setpost');
-
+    $app->post('/v1/accountsposts/addaccount', App\Handler\AccountAddAccountHandler::class, 'accountaddaccount');
     $app->get('/v1/accounts', App\Handler\AccountsHandler::class, 'accounts');
     $app->get('/v1/getaccountsandpost', App\Handler\AccountAndPostAllHandler::class, 'accountandpostall');
     $app->get('/v1/accountsposts/byid', App\Handler\AccountAndPostByAccountIdHandler::class, 'accountsadnpostsbyid');

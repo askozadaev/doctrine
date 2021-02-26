@@ -14,7 +14,6 @@ class PostsSetHandlerFactory
     {
         $em = $container->get(EntityManagerInterface::class);
         $postsRepository = $container->get(PostRepository::class);
-
         return new PostsSetHandler($em, $postsRepository);
     }
 }

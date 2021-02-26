@@ -6,7 +6,7 @@ namespace App\Handler;
 use App\Entity\AccountAndPost;
 use App\Exception\RuntimeException;
 use App\Repository\AccountAndPostRepository;
-use App\Validator\EmptyParametrValidator;
+use App\Validator\ParametrValidator;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Util\Json;
 use Psr\Http\Message\ResponseInterface;
@@ -40,13 +40,17 @@ class AccountAddAccountHandler implements RequestHandlerInterface
     {
         $PARAM_1_NAME = 'fullName';
         $PARAM_2_NAME = 'postId';
-        $emptyParametrValidator = new EmptyParametrValidator();
-        $emptyParametrValidator->validate($request, [$PARAM_1_NAME, $PARAM_2_NAME]);
-        if ($emptyParametrValidator->isValid()) {
+        $paramValidator = new ParametrValidator();
+        $paramValidator->validate($request, [$PARAM_1_NAME, $PARAM_2_NAME]);
+        if ($paramValidator->isValid()) {
             $fullName = json_decode($request->getBody()->getContents())->{$PARAM_1_NAME};
             $postId = json_decode($request->getBody()->getContents())->{$PARAM_2_NAME};
-            $accountAndPostResult = $this->accountAndPostRepository->setAccounts($fullName, $postId);
-            return new JsonResponse($accountAndPostResult);
+            try {
+                $accountAndPostResult = $this->accountAndPostRepository->setAccounts($fullName, $postId);
+                return new JsonResponse($accountAndPostResult);
+            } catch (Exception $ex) {
+                return (new JsonResponse("A error! Bad Request"))->withStatus(400);
+            }
         } else {
             return (new JsonResponse("A error! The quantity of parameters does not match"))->withStatus(400);
         }

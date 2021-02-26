@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Validator\ParametrValidator;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -35,7 +36,17 @@ class AccountsHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        $accountsResult = $this->accountRepository->getAccountsAll();
-        return new JsonResponse($accountsResult);
+        try {
+            $paramValidator = new ParametrValidator();
+            $paramValidator->validate($request, []);
+            if ($paramValidator->isValid()) {
+                $accountsResult = $this->accountRepository->getAccountsAll();
+                return new JsonResponse($accountsResult);
+            } else {
+                return (new JsonResponse("A error! The quantity of parameters does not match"))->withStatus(400);
+            }
+        } catch (\Throwable $ex) {
+            return (new JsonResponse("A error! Bad Request"))->withStatus(400);
+        }
     }
 }

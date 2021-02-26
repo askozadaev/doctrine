@@ -4,6 +4,7 @@
 namespace App\Handler;
 
 use App\Repository\PostRepository;
+use App\Validator\ParametrValidator;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -42,7 +43,17 @@ class PostsHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        $postResult = $this->postRepository->getPostsAll();
-        return new JsonResponse($postResult);
+        try {
+            $paramValidator = new ParametrValidator();
+            $paramValidator->validate($request, []);
+            if ($paramValidator->isValid()) {
+                $postResult = $this->postRepository->getPostsAll();
+                return new JsonResponse($postResult);
+            } else {
+                return (new JsonResponse("A error! The quantity of parameters does not match"))->withStatus(400);
+            }
+        } catch (\Throwable $ex) {
+            return (new JsonResponse("A error! Bad Request"))->withStatus(400);
+        }
     }
 }
