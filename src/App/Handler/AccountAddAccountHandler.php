@@ -52,13 +52,13 @@ class AccountAddAccountHandler implements RequestHandlerInterface
             $postId = json_decode($request->getBody()->getContents())->{$PARAM_2_NAME};
             try {
 //                $accountAndPostResult = $this->accountAndPostRepository->setAccounts($fullName, $postId);
-                $acc = new Account();
-                $acc->setFullName($fullName);
-                $acc->setPostId($postId);
-                $this->manager->persist($acc);
+                $account = new Account();
+                $account->setFullName($fullName);
+                $account->setPostId($postId);
+                $this->manager->persist($account);
                 $this->manager->flush();
                 $responseBody = [
-                    'data' => $acc,
+                    'data' => $account,
                 ];
                 return new JsonResponse($responseBody);
             } catch (ORMException $e) {

@@ -32,7 +32,9 @@ class AccountsHandler implements RequestHandlerInterface
             $paramValidator = new ParametersValidator();
             $paramValidator->validate($request, []);
             if ($paramValidator->isValid()) {
-                $accountsResult = $this->accountRepository->getAccountsAll();
+                $accountsResult = $this
+                    ->accountRepository
+                    ->getAccountsAll();
                 return new JsonResponse($accountsResult);
             } else {
                 return (new JsonResponse("A error! The quantity of parameters does not match"))->withStatus(400);

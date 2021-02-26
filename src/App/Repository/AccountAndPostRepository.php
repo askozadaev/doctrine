@@ -89,19 +89,4 @@ class AccountAndPostRepository
             return [];
         }
     }
-
-/*    public function setAccounts($fullName, $postId): bool
-    {
-        try {
-            $acc = new Account();
-            $acc->setFullName($fullName);
-            $acc->setPostId($postId);
-            $this->entityManager->persist($acc);
-            $this->entityManager->flush();
-            return true;
-        } catch (Exception $ex) {
-            var_dump($ex->getMessage());
-            return false;
-        }
-    }*/
 }

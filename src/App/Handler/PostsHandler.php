@@ -30,7 +30,9 @@ class PostsHandler implements RequestHandlerInterface
             $paramValidator = new ParametersValidator();
             $paramValidator->validate($request, []);
             if ($paramValidator->isValid()) {
-                $postResult = $this->postRepository->getPostsAll();
+                $postResult = $this
+                    ->postRepository
+                    ->getPostsAll();
                 return new JsonResponse($postResult);
             } else {
                 return (new JsonResponse("A error! The quantity of parameters does not match"))->withStatus(400);

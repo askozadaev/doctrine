@@ -35,8 +35,11 @@ class AccountAndPostByAccountIdHandler implements RequestHandlerInterface
             $paramValidator = new ParametersValidator();
             $paramValidator->validate($request, [$PARAM_1_NAME]);
             if ($paramValidator->isValid()) {
-                $accountId = $request->getQueryParams()[$PARAM_1_NAME];
-                $accountAndPostResult = $this->accountAndPostRepository->getAccountsAndPostsByAccountId($accountId);
+                $accountId = $request
+                    ->getQueryParams()[$PARAM_1_NAME];
+                $accountAndPostResult = $this
+                    ->accountAndPostRepository
+                    ->getAccountsAndPostsByAccountId($accountId);
                 return new JsonResponse($accountAndPostResult);
             } else {
                 return (new JsonResponse("A error! The quantity of parameters does not match"))->withStatus(400);

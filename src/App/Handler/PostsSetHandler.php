@@ -49,8 +49,12 @@ class PostsSetHandler implements RequestHandlerInterface
                 $param = json_decode($request->getBody()->getContents())->{$PARAM_1_NAME};
                 $post = new Post();
                 $post->setName($param);
-                $this->manager->persist($post);
-                $this->manager->flush();
+                $this
+                    ->manager
+                    ->persist($post);
+                $this
+                    ->manager
+                    ->flush();
                 $responseBody = [
                     'data' => $post,
                 ];
