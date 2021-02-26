@@ -125,7 +125,7 @@ class Account implements \JsonSerializable
         return [
             'id' => $this->id,
             'fullName' => $this->fullName,
-            'post' => $this->post->getName()
+            'postId' => $this->postId
         ];
     }
 }

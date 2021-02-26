@@ -34,16 +34,4 @@ class PostRepository
             throw new RuntimeException($ex->getMessage());
         }
     }
-    public function setPost(string $postName): bool
-    {
-        try {
-            $post = new Post();
-            $post->setName($postName);
-            $this->entityManager->persist($post);
-            $this->entityManager->flush();
-            return true;
-        } catch (\Exception $ex) {
-            return false;
-        }
-    }
 }

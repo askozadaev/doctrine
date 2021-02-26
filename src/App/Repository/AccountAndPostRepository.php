@@ -90,7 +90,7 @@ class AccountAndPostRepository
         }
     }
 
-    public function setAccounts($fullName, $postId): bool
+/*    public function setAccounts($fullName, $postId): bool
     {
         try {
             $acc = new Account();
@@ -103,5 +103,5 @@ class AccountAndPostRepository
             var_dump($ex->getMessage());
             return false;
         }
-    }
+    }*/
 }
